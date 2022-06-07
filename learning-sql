@@ -1,0 +1,98 @@
+-- These Queries are perfomed upon the file: 
+
+
+
+SELECT
+--destination,
+passanger,
+weather AS 'Weather'
+FROM dataset_1
+WHERE passanger = 'Alone'
+ORDER BY temperature;
+
+SELECT *
+FROM dataset_1 d
+
+SELECT *
+FROM table_to_union ttu
+
+SELECT *
+FROM table_to_join ttj 
+
+
+SELECT destination, time, age,
+AVG(temperature) AS avg_temp,
+SUM(temperature) AS total_temp_vals,
+COUNT(temperature) AS total_temp,
+MIN(temperature) AS min_temp,
+MAX(temperature) AS max_temp
+FROM dataset_1 d
+GROUP BY destination, time
+HAVING AVG(age) < 41;
+
+
+
+
+SELECT DISTINCT destination
+FROM
+(SELECT *
+FROM dataset_1 d
+UNION ALL
+SELECT *
+FROM table_to_union ttu)
+
+
+
+SELECT destination, d.time, ttj.part_of_day 
+FROM dataset_1 d 
+LEFT JOIN table_to_join ttj 
+ON d.time = ttj.time
+
+
+
+SELECT COUNT(1)
+FROM
+(SELECT *
+FROM dataset_1 d 
+WHERE d.time LIKE '%P%')
+
+
+
+SELECT DISTINCT d.temperature
+FROM dataset_1 d
+WHERE d.temperature BETWEEN 29 AND 75
+
+
+
+
+SELECT d.occupation 
+FROM dataset_1 d 
+WHERE d.occupation IN ('Sales & Related', 'Management')
+
+
+SELECT destination, row_count,
+CASE 
+	WHEN row_count BETWEEN 4 AND 18 THEN 'Yes! The CASE statement worked!!'
+	ELSE 'Woohoooo!!'
+END AS case_when
+FROM dataset_1 d;
+
+
+
+
+SELECT destination, row_count,
+CASE 
+	WHEN row_count IN (1,2,3) THEN 'Got It!'
+	WHEN destination = 'No Urgent Place' THEN 'OKAY'
+	ELSE 'Eh... Normal now'
+END AS case_when
+FROM dataset_1 d;
+
+
+
+--Finding the second highest value of temperature (distinct)
+SELECT
+(SELECT DISTINCT d.temperature
+FROM dataset_1 d) AS second_highest_temp
+FROM dataset_1 d2
+ORDER BY d2.temperature LIMIT 1,1;
